@@ -14,7 +14,7 @@ public class MockISO8583Server implements ISORequestListener {
     public static void main(String[] args) throws ISOException {
         String hostname = "localhost";
         int portNumber = 5000;
-
+        //127.0.0.1
 //		ISOPackager packager = new GenericPackager("CustomConfig.xml");
         ServerChannel channel = new ASCIIChannel(hostname, portNumber, new Packager());
 
