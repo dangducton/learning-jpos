@@ -1,6 +1,8 @@
 package com.jpos.server;
+
 import java.io.IOException;
 
+import com.jpos.common.utils.Packager;
 import org.jpos.iso.BaseChannel;
 
 import org.jpos.iso.ISOException;
@@ -20,9 +22,9 @@ public class MockISO8583Server implements ISORequestListener {
 		String hostname = "localhost";
 		int portNumber = 5000;
 
-		ISOPackager packager = new GenericPackager("CustomConfig.xml");
-		ServerChannel channel = new ASCIIChannel(hostname, portNumber, packager);
-		
+//		ISOPackager packager = new GenericPackager("CustomConfig.xml");
+		ServerChannel channel = new ASCIIChannel(hostname, portNumber, new Packager());
+
 		ISOServer server = new ISOServer(portNumber, channel, null);
 
 		server.addISORequestListener(new MockISO8583Server());
@@ -36,9 +38,9 @@ public class MockISO8583Server implements ISORequestListener {
 		try {
 			System.out.println("ISO8583 incoming message on host ["
 					+ ((BaseChannel) isoSrc).getSocket().getInetAddress()
-							.getHostAddress() + "]");
-				receiveMessage(isoSrc, isoMsg);
-				logISOMsg(isoMsg);
+					.getHostAddress() + "]");
+			receiveMessage(isoSrc, isoMsg);
+			logISOMsg(isoMsg);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -49,7 +51,7 @@ public class MockISO8583Server implements ISORequestListener {
 			throws ISOException, IOException {
 		System.out.println("ISO8583 Message received...");
 		ISOMsg reply = (ISOMsg) isoMsg.clone();
-		
+
 		reply.setMTI("0219");
 		reply.set(39, "00");
 
